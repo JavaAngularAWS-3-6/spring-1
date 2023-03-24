@@ -1,9 +1,8 @@
 package MyApp.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.*;
 
 /**
@@ -25,4 +24,8 @@ public class Ticket {
     private String description;
     private String type;
     private boolean resolved;
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "userFK")
+    private Account account;
 }

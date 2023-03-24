@@ -1,7 +1,9 @@
 package MyApp.Service;
 
 import MyApp.Model.Ticket;
+import MyApp.Model.Account;
 import MyApp.Repository.TicketRepository;
+import MyApp.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @Service
 public class TicketService {
     TicketRepository ticketRepository;
+    AccountRepository accountRepository;
     @Autowired
     public TicketService(TicketRepository ticketRepository){
         this.ticketRepository = ticketRepository;
@@ -30,7 +33,9 @@ public class TicketService {
         return ticketRepository.findById(id).get();
     }
 
-    public Ticket addTicket(Ticket ticket) {
+    public Ticket addTicket(long id, Ticket ticket) {
+        Account account = accountRepository.findById(id).get();
+        ticket.setAccount(account);
         return ticketRepository.save(ticket);
     }
 

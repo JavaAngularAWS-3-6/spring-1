@@ -27,9 +27,11 @@ public class TicketController {
     public List<Ticket> getAllTickets(){
         return ticketService.getAllTickets();
     }
-    @PostMapping("ticket")
-    public Ticket postTicket(@RequestBody Ticket ticket){
-        return ticketService.addTicket(ticket);
+    @PostMapping("user/{id}/ticket")
+    public Ticket postTicket(@PathVariable long id, @RequestBody Ticket ticket){
+//        TODO: grab the user id and JTW token from the request headers / cookies, and verify that they
+//        match what's in the userRepository
+        return ticketService.addTicket(id, ticket);
     }
     @GetMapping(value = "ticket", params = {"resolved"})
     public List<Ticket> getAllTicketsOfResolutionType(@RequestParam(name = "resolved") boolean resolved){
@@ -37,13 +39,15 @@ public class TicketController {
     }
     @PatchMapping("ticket/{id}")
     public Ticket changeTicketStatus(@RequestBody Ticket ticket, @PathVariable long id){
+//        TODO: grab the user id and JTW token from the request headers / cookies, and verify that they
+//        match what's in the userRepository
         return ticketService.changeTicketStatus(id, ticket);
     }
     /**
      * 1. As a user, I should be able to submit a ticket
      * POST localhost:9000/ticket
      *
-     * 2. As a user, I should be able to view all my resolved tickets
+     * 2. As a user, I should be able to view all my resolved/unresolved tickets
      * GET localhost:9000/user/{id}/ticket?resolved={true/false}
      * GET localhost:9000/user/{id}/ticket/resolved/{true/false}
      *
@@ -55,6 +59,9 @@ public class TicketController {
      *
      * 4. As a tech support agent, I should be able to change a ticket's status to resolved
      * PATCH localhost:9000/ticket/{id} - with a request body containing {resolved="true"}
+     *
+     * 5. As a user or tech support agent, I should be able to log in, and this login should be "secure",
+     * granting a pretend JWT for validating all secure transactions
      *
      * another good way to manage user stories: it's generally good to divide work
      * between user stories, fulfilled where a single person does both the front and back end, rather
