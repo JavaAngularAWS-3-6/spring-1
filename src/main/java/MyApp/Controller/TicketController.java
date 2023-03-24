@@ -17,6 +17,7 @@ import java.util.List;
  * Spring Boot
  */
 @RestController
+@CrossOrigin
 public class TicketController {
     TicketService ticketService;
     @Autowired
